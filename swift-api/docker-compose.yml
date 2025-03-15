@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   postgres:
     image: postgres:15
@@ -15,10 +13,7 @@ services:
       - pgdata:/var/lib/postgresql/data
 
   app:
-    build:
-      context: .
-      args:
-        - DOCKER_BUILDKIT=1
+    build: .
     container_name: my_springboot_app
     restart: always
     depends_on:
