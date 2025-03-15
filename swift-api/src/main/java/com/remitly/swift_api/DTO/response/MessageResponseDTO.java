@@ -1,4 +1,4 @@
-package com.remitly.swift_api.DTO;
+package com.remitly.swift_api.DTO.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

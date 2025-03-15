@@ -1,11 +1,16 @@
 package com.remitly.swift_api.service;
 
-import com.remitly.swift_api.DTO.NewSwiftCodeDTO;
+import com.remitly.swift_api.DTO.request.NewSwiftCodeDTO;
+import com.remitly.swift_api.DTO.response.CountryDetailsResponseDTO;
+import com.remitly.swift_api.DTO.response.SwiftCodeResponseDTO;
 import com.remitly.swift_api.model.SwiftCode;
 import com.remitly.swift_api.repository.SwiftCodeRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.MethodArgumentNotValidException;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -14,6 +19,24 @@ public class SwiftCodeService {
 
     private boolean swiftCodeExist(String swiftCode) {
         return swiftCodeRepository.findById(swiftCode).isPresent();
+    }
+
+    public CountryDetailsResponseDTO getCountryDetails(String code) {
+        List<SwiftCode> swiftCodes = swiftCodeRepository.findByCountryCode(code);
+        if (swiftCodes.isEmpty()) {
+            throw new IllegalArgumentException("Such country code does not exist.");
+        }
+
+        List<SwiftCodeResponseDTO> swiftCodeResponseDTOs = swiftCodes.stream()
+                .map(swiftCode -> new SwiftCodeResponseDTO(
+                        swiftCode.getAddress(),
+                        swiftCode.getName(),
+                        swiftCode.getCountryCode(),
+                        swiftCode.getSwiftCode().endsWith("XXX"),
+                        swiftCode.getSwiftCode()))
+                .collect(Collectors.toList());
+
+        return new CountryDetailsResponseDTO(code, swiftCodes.getFirst().getCountry(), swiftCodeResponseDTOs);
     }
 
     public String addSwiftCode(NewSwiftCodeDTO request) {

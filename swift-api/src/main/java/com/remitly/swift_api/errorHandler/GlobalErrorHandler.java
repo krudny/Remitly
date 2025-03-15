@@ -1,6 +1,6 @@
 package com.remitly.swift_api.errorHandler;
 
-import com.remitly.swift_api.DTO.MessageResponseDTO;
+import com.remitly.swift_api.DTO.response.MessageResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
