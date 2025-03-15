@@ -1,11 +1,16 @@
 package com.remitly.swift_api.controller;
 
+import com.remitly.swift_api.DTO.MessageResponseDTO;
+import com.remitly.swift_api.DTO.NewSwiftCodeDTO;
 import com.remitly.swift_api.service.SwiftCodeService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -13,8 +18,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class SwiftCodeController {
     private final SwiftCodeService swiftCodeService;
 
+    @PostMapping()
+    public ResponseEntity<MessageResponseDTO> addSwiftCode(@Valid @RequestBody NewSwiftCodeDTO request) {
+        String response = swiftCodeService.addSwiftCode(request);
+        return new ResponseEntity<>(new MessageResponseDTO(response), HttpStatus.CREATED);
+    }
+
     @DeleteMapping("/{swift-code}")
-    public String deleteSwiftCode(@PathVariable("swift-code") String swiftCode) {
-        return swiftCodeService.deleteSwiftCode(swiftCode);
+    public ResponseEntity<MessageResponseDTO> deleteSwiftCode(@PathVariable("swift-code") String swiftCode) {
+        String response = swiftCodeService.deleteSwiftCode(swiftCode);
+        return new ResponseEntity<>(new MessageResponseDTO(response), HttpStatus.OK);
     }
 }
