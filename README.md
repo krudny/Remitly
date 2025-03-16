@@ -5,7 +5,7 @@ This repository contains code for recruitment purposes at Remitly in Cracow. It 
 
 ## Technologies 
 
-- **Backend** - Java 23 with SpringBoot
+- **Backend** - Java 21 with SpringBoot 3.4.3
 - **Database** - PostgreSQL
 - **Contenerization** - Docker Compose
 - **Development enviroment** - Intellij IDEA, DataGrip, Postman, Swagger
