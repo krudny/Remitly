@@ -70,11 +70,11 @@ public class SwiftCodeService {
 
     public MessageResponseDTO addSwiftCode(NewSwiftCodeDTO request) {
         SwiftCode newSwiftCode = SwiftCode.builder()
-                .address(request.getAddress())
-                .name(request.getBankName())
-                .countryCode(request.getCountryISO2())
-                .country(request.getCountryName())
-                .swiftCode(request.getSwiftCode())
+                .address(request.address())
+                .name(request.bankName())
+                .countryCode(request.countryISO2())
+                .country(request.countryName())
+                .swiftCode(request.swiftCode())
                 .build();
 
         String swiftCode = newSwiftCode.getSwiftCode();
@@ -83,7 +83,7 @@ public class SwiftCodeService {
             throw new IllegalArgumentException("Such swiftcode already exists");
         }
 
-        if (request.getIsHeadquarter() && !swiftCode.endsWith("XXX")) {
+        if (request.isHeadquarter() && !swiftCode.endsWith("XXX")) {
             throw new IllegalArgumentException("Headquarters swift code should end with XXX");
         }
 

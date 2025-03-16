@@ -25,6 +25,12 @@ Run `postgreSQL` database.
 docker-compose up -d postgres
 ```
 
+Build project. 
+
+```bash
+mvn clean package
+```
+
 Run the application.
 
 ```bash

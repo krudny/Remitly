@@ -18,6 +18,7 @@ services:
     restart: always
     depends_on:
       - postgres
+    # exposed only for test purposes
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/swift_db
       SPRING_DATASOURCE_USERNAME: admin

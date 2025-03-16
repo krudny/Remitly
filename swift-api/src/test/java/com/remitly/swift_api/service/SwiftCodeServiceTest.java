@@ -70,7 +70,7 @@ class SwiftCodeServiceTest {
 
         MessageResponseDTO result = swiftCodeService.addSwiftCode(newSwiftCodeDTO);
 
-        assertEquals("New swift code added successfully", result.getMessage());
+        assertEquals("New swift code added successfully", result.message());
     }
 
     @Test
@@ -98,7 +98,7 @@ class SwiftCodeServiceTest {
 
         MessageResponseDTO result = swiftCodeService.deleteSwiftCode("EXAMPLE123");
 
-        assertEquals("Swift code deleted successfully", result.getMessage());
+        assertEquals("Swift code deleted successfully", result.message());
     }
 
     @Test
@@ -122,9 +122,9 @@ class SwiftCodeServiceTest {
 
         CountryDetailsResponseDTO result = swiftCodeService.getCountryDetails("US");
 
-        assertEquals("US", result.getCountryISO());
-        assertEquals("Test Country", result.getCountryName());
-        assertEquals(1, result.getSwiftCodes().size());
+        assertEquals("US", result.countryISO());
+        assertEquals("Test Country", result.countryName());
+        assertEquals(1, result.swiftCodes().size());
     }
 
     @Test
