@@ -47,9 +47,11 @@ The application provides user-friendly error feedback to ensure a smooth user ex
 
 ### 1. Retrieve details of a single SWIFT code
 **GET**: `/v1/swift-codes/{swift-code}`
+**Example usage**: `/v1/swift-codes/BPKOPLPWXXX`
 
 ### 2. Retrieve all SWIFT codes for a specific country
 **GET**: `/v1/swift-codes/country/{countryISO2code}`
+**Example usage**: `/v1/swift-codes/country/PL`
 
 ### 3. Add a new SWIFT code entry
 **POST**: `/v1/swift-codes`
@@ -68,3 +70,4 @@ The application provides user-friendly error feedback to ensure a smooth user ex
 
 ### 4. Delete a SWIFT code entry
 **DELETE**: `/v1/swift-codes/{swift-code}`
+**Example usage**: `/v1/swift-codes/BPKOPLPWXXX`
