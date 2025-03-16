@@ -1,6 +1,7 @@
 package com.remitly.swift_api.controller;
 
 import com.remitly.swift_api.DTO.response.CountryDetailsResponseDTO;
+import com.remitly.swift_api.DTO.response.DetailsResponseDTO;
 import com.remitly.swift_api.DTO.response.MessageResponseDTO;
 import com.remitly.swift_api.DTO.request.NewSwiftCodeDTO;
 import com.remitly.swift_api.service.SwiftCodeService;
@@ -18,9 +19,14 @@ import java.util.List;
 public class SwiftCodeController {
     private final SwiftCodeService swiftCodeService;
 
+    @GetMapping("/{swift-code}")
+    public ResponseEntity<DetailsResponseDTO> getDetails(@PathVariable("swift-code") String swiftCode) {
+        return new ResponseEntity<>(swiftCodeService.getDetails(swiftCode), HttpStatus.OK);
+    }
+
     @GetMapping("/country/{countryISO2code}")
-    public ResponseEntity<CountryDetailsResponseDTO> getCountryDetails(@PathVariable("countryISO2code") String code) {
-        return new ResponseEntity<>(swiftCodeService.getCountryDetails(code), HttpStatus.OK);
+    public ResponseEntity<CountryDetailsResponseDTO> getCountryDetails(@PathVariable("countryISO2code") String countryCode) {
+        return new ResponseEntity<>(swiftCodeService.getCountryDetails(countryCode), HttpStatus.OK);
     }
 
     @PostMapping()

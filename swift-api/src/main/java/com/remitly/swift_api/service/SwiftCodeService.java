@@ -2,6 +2,7 @@ package com.remitly.swift_api.service;
 
 import com.remitly.swift_api.DTO.request.NewSwiftCodeDTO;
 import com.remitly.swift_api.DTO.response.CountryDetailsResponseDTO;
+import com.remitly.swift_api.DTO.response.DetailsResponseDTO;
 import com.remitly.swift_api.DTO.response.SwiftCodeResponseDTO;
 import com.remitly.swift_api.model.SwiftCode;
 import com.remitly.swift_api.repository.SwiftCodeRepository;
@@ -21,8 +22,41 @@ public class SwiftCodeService {
         return swiftCodeRepository.findById(swiftCode).isPresent();
     }
 
-    public CountryDetailsResponseDTO getCountryDetails(String code) {
-        List<SwiftCode> swiftCodes = swiftCodeRepository.findByCountryCode(code);
+    public DetailsResponseDTO getDetails(String swiftCode) {
+        SwiftCode swiftCodeEntity = swiftCodeRepository.findBySwiftCode(swiftCode);
+        if (swiftCodeEntity == null) {
+            throw new IllegalArgumentException("Such country code does not exist.");
+        }
+
+
+        String swiftCodePrefix = swiftCode.substring(0, 8);
+        List<SwiftCode> branches = swiftCodeRepository.findBySwiftCodeStartingWith(swiftCodePrefix).stream()
+                .filter(branch -> !branch.getSwiftCode().equals(swiftCode)).toList();
+
+
+        List<SwiftCodeResponseDTO> swiftCodeResponseDTOs = branches.stream()
+                .map(branch -> new SwiftCodeResponseDTO(
+                        branch.getAddress(),
+                        branch.getName(),
+                        branch.getCountryCode(),
+                        branch.getSwiftCode().endsWith("XXX") ? Boolean.TRUE : Boolean.FALSE,
+                        branch.getSwiftCode()))
+                .toList();
+
+        return DetailsResponseDTO.builder()
+                .address(swiftCodeEntity.getAddress())
+                .bankName(swiftCodeEntity.getName())
+                .countryISO2(swiftCodeEntity.getCountryCode())
+                .countryName(swiftCodeEntity.getCountry())
+                .isHeadquarter(swiftCodeEntity.getSwiftCode().endsWith("XXX") ? Boolean.TRUE : Boolean.FALSE)
+                .swiftCode(swiftCodeEntity.getSwiftCode())
+                .branches(swiftCodeResponseDTOs)
+                .build();
+
+    }
+
+    public CountryDetailsResponseDTO getCountryDetails(String countryCode) {
+        List<SwiftCode> swiftCodes = swiftCodeRepository.findByCountryCode(countryCode);
         if (swiftCodes.isEmpty()) {
             throw new IllegalArgumentException("Such country code does not exist.");
         }
@@ -32,11 +66,11 @@ public class SwiftCodeService {
                         swiftCode.getAddress(),
                         swiftCode.getName(),
                         swiftCode.getCountryCode(),
-                        swiftCode.getSwiftCode().endsWith("XXX"),
+                        swiftCode.getSwiftCode().endsWith("XXX") ? Boolean.TRUE : Boolean.FALSE,
                         swiftCode.getSwiftCode()))
                 .collect(Collectors.toList());
 
-        return new CountryDetailsResponseDTO(code, swiftCodes.getFirst().getCountry(), swiftCodeResponseDTOs);
+        return new CountryDetailsResponseDTO(countryCode, swiftCodes.getFirst().getCountry(), swiftCodeResponseDTOs);
     }
 
     public String addSwiftCode(NewSwiftCodeDTO request) {
