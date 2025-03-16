@@ -12,6 +12,8 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @AllArgsConstructor
 @Service
@@ -25,28 +27,19 @@ public class CsvReader {
                     .withFirstRecordAsHeader()
                     .parse(reader);
 
-            List<SwiftCode> swiftCodes = new ArrayList<>();
-
-            for (CSVRecord record : records) {
-                String swiftCode = record.get("SWIFT CODE");
-
-                if (swiftCodeRepository.existsById(swiftCode)) {
-                    continue;
-                }
-
-                SwiftCode newCode = SwiftCode.builder()
-                        .swiftCode(swiftCode.trim())
-                        .countryCode(record.get("COUNTRY ISO2 CODE").trim())
-                        .codeType(record.get("CODE TYPE").trim())
-                        .name(record.get("NAME").trim())
-                        .address(record.get("ADDRESS").trim())
-                        .town(record.get("TOWN NAME").trim())
-                        .country(record.get("COUNTRY NAME").trim())
-                        .timezone(record.get("TIME ZONE").trim())
-                        .build();
-
-                swiftCodes.add(newCode);
-            }
+            List<SwiftCode> swiftCodes = StreamSupport.stream(records.spliterator(), false)
+                    .filter(record -> !swiftCodeRepository.existsById(record.get("SWIFT CODE")))
+                    .map(record -> SwiftCode.builder()
+                            .swiftCode(record.get("SWIFT CODE").trim())
+                            .countryCode(record.get("COUNTRY ISO2 CODE").trim())
+                            .codeType(record.get("CODE TYPE").trim())
+                            .name(record.get("NAME").trim())
+                            .address(record.get("ADDRESS").trim())
+                            .town(record.get("TOWN NAME").trim())
+                            .country(record.get("COUNTRY NAME").trim())
+                            .timezone(record.get("TIME ZONE").trim())
+                            .build())
+                    .collect(Collectors.toList());
 
             swiftCodeRepository.saveAll(swiftCodes);
         } catch (Exception e) {
