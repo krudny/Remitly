@@ -31,13 +31,11 @@ public class SwiftCodeController {
 
     @PostMapping()
     public ResponseEntity<MessageResponseDTO> addSwiftCode(@Valid @RequestBody NewSwiftCodeDTO request) {
-        String response = swiftCodeService.addSwiftCode(request);
-        return new ResponseEntity<>(new MessageResponseDTO(response), HttpStatus.CREATED);
+        return new ResponseEntity<>(swiftCodeService.addSwiftCode(request), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{swift-code}")
     public ResponseEntity<MessageResponseDTO> deleteSwiftCode(@PathVariable("swift-code") String swiftCode) {
-        String response = swiftCodeService.deleteSwiftCode(swiftCode);
-        return new ResponseEntity<>(new MessageResponseDTO(response), HttpStatus.OK);
+        return new ResponseEntity<>(swiftCodeService.deleteSwiftCode(swiftCode), HttpStatus.OK);
     }
 }
