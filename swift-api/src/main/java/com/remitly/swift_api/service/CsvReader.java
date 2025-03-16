@@ -50,7 +50,7 @@ public class CsvReader {
 
             swiftCodeRepository.saveAll(swiftCodes);
         } catch (Exception e) {
-            throw new RuntimeException("Błąd podczas parsowania CSV: " + e.getMessage());
+            throw new RuntimeException("Błąd podczas parsowania CSV: " + e.getMessage(), e);
         }
     }
 }

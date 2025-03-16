@@ -18,7 +18,7 @@ public class SwiftCodeService {
     private final SwiftCodeRepository swiftCodeRepository;
 
     private boolean swiftCodeExist(String swiftCode) {
-        return swiftCodeRepository.findById(swiftCode).isPresent();
+        return swiftCodeRepository.existsById(swiftCode);
     }
 
     private List<SwiftCodeResponseDTO> mapToResponse(List<SwiftCode> swiftCodes) {

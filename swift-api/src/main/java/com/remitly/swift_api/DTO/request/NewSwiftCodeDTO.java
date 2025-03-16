@@ -2,11 +2,13 @@ package com.remitly.swift_api.DTO.request;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class NewSwiftCodeDTO {
     @NotNull(message = "Address cannot be null")
     @Size(min = 1, message = "Address cannot be empty")
