@@ -3,6 +3,17 @@
 ## Overview
 This repository contains code for recruitment purposes at Remitly in Cracow. It parses SWIFT codes from CSV file, stores them in a database, and exposes a RESTful API to perform CRUD operations.
 
+## Continuous Integration 
+
+This project uses **GitHub Actions** for Continuous Integration. The workflow includes:
+
+- **CodeQL Analysis**: Automatically scans for security vulnerabilities in Java/Kotlin code.
+- **Maven Build**: Ensures the project compiles successfully using JDK 21 (`temurin` distribution).
+- **Docker & PostgreSQL**: Runs database services for integration testing.
+- **Scheduled Runs**: Executes a security scan every Thursday at 16:22 UTC.
+
+You can find the workflow configuration in `.github/workflows/codeql.yml`.
+
 ## Technologies 
 
 - **Backend** - Java 21 with SpringBoot 3.4.3
