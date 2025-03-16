@@ -1,5 +1,6 @@
 package com.remitly.swift_api.DTO.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,5 +17,6 @@ public class DetailsResponseDTO {
     private String countryName;
     private Boolean isHeadquarter;
     private String swiftCode;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<SwiftCodeResponseDTO> branches;
 }

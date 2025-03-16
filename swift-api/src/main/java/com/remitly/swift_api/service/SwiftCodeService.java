@@ -34,24 +34,29 @@ public class SwiftCodeService {
 
     public DetailsResponseDTO getDetails(String swiftCode) {
         if (!swiftCodeExist(swiftCode)) {
-            throw new IllegalArgumentException("Such country code does not exist.");
+            throw new IllegalArgumentException("Such swift code does not exist.");
         }
 
         SwiftCode swiftCodeEntity = swiftCodeRepository.findBySwiftCode(swiftCode);
-        String swiftCodePrefix = swiftCode.substring(0, 8);
-        List<SwiftCode> branches = swiftCodeRepository.findBySwiftCodeStartingWith(swiftCodePrefix).stream()
-                .filter(branch -> !branch.getSwiftCode().equals(swiftCode)).toList();
-
-        return DetailsResponseDTO.builder()
+        DetailsResponseDTO response = DetailsResponseDTO.builder()
                 .address(swiftCodeEntity.getAddress())
                 .bankName(swiftCodeEntity.getName())
                 .countryISO2(swiftCodeEntity.getCountryCode())
                 .countryName(swiftCodeEntity.getCountry())
                 .isHeadquarter(swiftCodeEntity.getSwiftCode().endsWith("XXX") ? Boolean.TRUE : Boolean.FALSE)
                 .swiftCode(swiftCodeEntity.getSwiftCode())
-                .branches(mapToResponse(branches))
                 .build();
 
+        if(!swiftCodeEntity.getSwiftCode().endsWith("XXX")) {
+            return response;
+        }
+
+        String swiftCodePrefix = swiftCode.substring(0, 8);
+        List<SwiftCode> branches = swiftCodeRepository.findBySwiftCodeStartingWith(swiftCodePrefix).stream()
+                .filter(branch -> !branch.getSwiftCode().equals(swiftCode)).toList();
+
+        response.setBranches(mapToResponse(branches));
+        return response;
     }
 
     public CountryDetailsResponseDTO getCountryDetails(String countryCode) {
