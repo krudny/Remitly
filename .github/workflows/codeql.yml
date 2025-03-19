@@ -2,7 +2,7 @@ name: "CodeQL Advanced with DB"
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "codeql-fix" ]
   pull_request:
     branches: [ "main" ]
   schedule:
